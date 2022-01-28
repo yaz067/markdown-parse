@@ -4,8 +4,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
-import javax.management.openmbean.OpenMBeanParameterInfo;
-
 public class MarkdownParse {
     public static ArrayList<String> getLinks(String markdown) {
         ArrayList<String> toReturn = new ArrayList<>();
@@ -14,18 +12,32 @@ public class MarkdownParse {
         int currentIndex = 0;
         while(currentIndex < markdown.length()) {
             int nextOpenBracket = markdown.indexOf("[", currentIndex);
-            int nextCloseBracket = markdown.indexOf("]", nextOpenBracket);
-            int openParen = markdown.indexOf("(", nextCloseBracket);
-            int closeParen = markdown.indexOf(")", openParen);
-            toReturn.add(markdown.substring(openParen + 1, closeParen));
 
-            if(nextOpenBracket == -1 || nextOpenBracket == -1  || openParen == -1|| closeParen == -1){
-                currentIndex = markdown.length();
-            }else if(openParen - nextOpenBracket == 1){
-                toReturn.add(markdown.substring(openParen +1,closeParen));
+            if (nextOpenBracket == -1) {
+                break;
             }
-            return toReturn;
 
+            int nextCloseBracket = markdown.indexOf("]", nextOpenBracket);
+
+            if (nextCloseBracket == -1) {
+                break;
+            }
+
+            int openParen = markdown.indexOf("(", nextCloseBracket);
+
+            if (openParen == -1) {
+                break;
+            }
+
+            int closeParen = markdown.indexOf(")", openParen);
+
+            if (closeParen == -1) {
+                break;
+            }
+
+            currentIndex = closeParen + 1;
+
+            toReturn.add(markdown.substring(openParen +1,closeParen));
         }
         return toReturn;
     }
