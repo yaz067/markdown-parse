@@ -23,12 +23,14 @@ public class MarkdownParse {
                 break;
             }
 
+
             int openParen = markdown.indexOf("(", nextCloseBracket);
 
             if (openParen == -1) {
                 break;
             }
 
+            // int closeParen = markdown.indexOf(")", openParen);
             int closeParen = markdown.indexOf(")", openParen);
 
             if (closeParen == -1) {
